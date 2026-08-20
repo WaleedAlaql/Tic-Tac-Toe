@@ -37,7 +37,7 @@ public class TicTacToe {
 
         for (int round = 1; round <= totalRounds; round++) {
             if (totalRounds > 1) {
-                System.out.println("\n--- Round " + round + " of 3 ---");
+                System.out.println("\n--- Round " + round + " of " + totalRounds + " ---");
             }
             resetBoard();
             char roundWinner = playSingleRound();
@@ -52,12 +52,16 @@ public class TicTacToe {
                 System.out.println("This round is a draw!");
             }
             System.out.println("Score -> You: " + playerScore + " | Computer: " + computerScore);
+
+            if (totalRounds > 1 && (playerScore == 2 || computerScore == 2)) {
+                System.out.println("\nMatch decided early!");
+                break;
+            }
         }
 
-        // Determine final winner if multi-round
         if (totalRounds > 1) {
             System.out.println("\n============================");
-            System.out.println("Final Score after 3 Rounds:");
+            System.out.println("Final Score:");
             System.out.println("You: " + playerScore + " | Computer: " + computerScore);
             if (playerScore > computerScore) {
                 System.out.println("Congratulations! You won the match!");
@@ -120,7 +124,7 @@ public class TicTacToe {
         }
     }
 
-    /**
+    /*
      * Displays the current state of the game board
      */
     public static void printBoard() {
@@ -181,7 +185,7 @@ public class TicTacToe {
     }
 
     /*
-     * Checks if the specified player has won the game
+     * Checks if the specified player has won the game.
      */
     public static boolean checkWin(char p) {
         for (int i = 0; i < 3; i++) {
