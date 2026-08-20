@@ -1,8 +1,8 @@
 package com.waleed;
 
-import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 public class TicTacToe {
 
@@ -16,10 +16,64 @@ public class TicTacToe {
 
     public static void main(String[] args) {
         System.out.println("=== Welcome to Tic Tac Toe! ===");
+        System.out.println("1. Play 1 Round");
+        System.out.println("2. Play 3 Rounds");
+        System.out.print("Choose game mode (1 or 2): ");
+
+        int choice = 1;
+        try {
+            if (scanner.hasNextInt()) {
+                choice = scanner.nextInt();
+            } else {
+                scanner.nextLine();
+            }
+        } catch (Exception e) {
+            scanner.nextLine();
+        }
+
+        int totalRounds = (choice == 2) ? 3 : 1;
+        int playerScore = 0;
+        int computerScore = 0;
+
+        for (int round = 1; round <= totalRounds; round++) {
+            if (totalRounds > 1) {
+                System.out.println("\n--- Round " + round + " of 3 ---");
+            }
+            resetBoard();
+            char roundWinner = playSingleRound();
+
+            if (roundWinner == 'X') {
+                playerScore++;
+                System.out.println("You won this round!");
+            } else if (roundWinner == 'O') {
+                computerScore++;
+                System.out.println("Computer won this round!");
+            } else {
+                System.out.println("This round is a draw!");
+            }
+            System.out.println("Score -> You: " + playerScore + " | Computer: " + computerScore);
+        }
+
+        // Determine final winner if multi-round
+        if (totalRounds > 1) {
+            System.out.println("\n============================");
+            System.out.println("Final Score after 3 Rounds:");
+            System.out.println("You: " + playerScore + " | Computer: " + computerScore);
+            if (playerScore > computerScore) {
+                System.out.println("Congratulations! You won the match!");
+            } else if (computerScore > playerScore) {
+                System.out.println("Computer won the match! Better luck next time.");
+            } else {
+                System.out.println("The match ended in a tie overall!");
+            }
+        }
+
+        System.out.println("Thank you for playing!");
+        scanner.close();
     }
 
     /*
-    Reset the game board back to initial state
+     * Resets the game board back to initial numbers state
      */
     public static void resetBoard() {
         char count = '1';
@@ -31,13 +85,49 @@ public class TicTacToe {
     }
 
     /*
-    Display the current state of the game board
+     * Manages a single round of Tic Tac Toe
+     */
+    public static char playSingleRound() {
+        char currentPlayer = 'X';
+        int moves = 0;
+
+        while (true) {
+            printBoard();
+
+            if (currentPlayer == 'X') {
+                playerMove();
+                moves++;
+                if (checkWin('X')) {
+                    printBoard();
+                    return 'X';
+                }
+            } else {
+                System.out.println("\nComputer's turn (O)...");
+                computerMove();
+                moves++;
+                if (checkWin('O')) {
+                    printBoard();
+                    return 'O';
+                }
+            }
+
+            if (moves == 9) {
+                printBoard();
+                return 'T'; // Tie
+            }
+
+            currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+        }
+    }
+
+    /**
+     * Displays the current state of the game board
      */
     public static void printBoard() {
         System.out.println("\n-------------");
-        for (int i = 0; i < 3; i++ ) {
+        for (int i = 0; i < 3; i++) {
             System.out.print("| ");
-            for (int j = 0; j < 3; j++ ) {
+            for (int j = 0; j < 3; j++) {
                 System.out.print(board[i][j] + " | ");
             }
             System.out.println("\n-------------");
@@ -68,13 +158,13 @@ public class TicTacToe {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input! Please enter a valid number.");
-                scanner.nextLine();
+                scanner.nextLine(); // clear invalid input from buffer
             }
         }
     }
 
     /*
-     * Generates a random valid position for the computer's turn.
+     * Generates a random valid position for the computer's turn
      */
     public static void computerMove() {
         while (true) {
@@ -91,7 +181,7 @@ public class TicTacToe {
     }
 
     /*
-     * Checks if the specified player has won the game.
+     * Checks if the specified player has won the game
      */
     public static boolean checkWin(char p) {
         for (int i = 0; i < 3; i++) {
