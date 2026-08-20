@@ -1,5 +1,6 @@
 package com.waleed;
 
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -40,6 +41,35 @@ public class TicTacToe {
                 System.out.print(board[i][j] + " | ");
             }
             System.out.println("\n-------------");
+        }
+    }
+
+    /*
+     * Handles the player's move
+     */
+    public static void playerMove() {
+        int choice;
+        while (true) {
+            System.out.print("Enter available position (1-9): ");
+            try {
+                choice = scanner.nextInt();
+                if (choice >= 1 && choice <= 9) {
+                    int row = (choice - 1) / 3;
+                    int col = (choice - 1) % 3;
+
+                    if (board[row][col] != 'X' && board[row][col] != 'O') {
+                        board[row][col] = 'X';
+                        break;
+                    } else {
+                        System.out.println("Position already taken! Choose another one.");
+                    }
+                } else {
+                    System.out.println("Invalid choice! Please enter a number between 1 and 9.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input! Please enter a valid number.");
+                scanner.nextLine();
+            }
         }
     }
 }
