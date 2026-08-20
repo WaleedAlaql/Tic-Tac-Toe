@@ -72,4 +72,38 @@ public class TicTacToe {
             }
         }
     }
+
+    /*
+     * Generates a random valid position for the computer's turn.
+     */
+    public static void computerMove() {
+        while (true) {
+            int choice = random.nextInt(9) + 1;
+            int row = (choice - 1) / 3;
+            int col = (choice - 1) % 3;
+
+            if (board[row][col] != 'X' && board[row][col] != 'O') {
+                board[row][col] = 'O';
+                System.out.println("Computer chose position: " + choice);
+                break;
+            }
+        }
+    }
+
+    /*
+     * Checks if the specified player has won the game.
+     */
+    public static boolean checkWin(char p) {
+        for (int i = 0; i < 3; i++) {
+            if ((board[i][0] == p && board[i][1] == p && board[i][2] == p) ||
+                    (board[0][i] == p && board[1][i] == p && board[2][i] == p)) {
+                return true;
+            }
+        }
+        if ((board[0][0] == p && board[1][1] == p && board[2][2] == p) ||
+                (board[0][2] == p && board[1][1] == p && board[2][0] == p)) {
+            return true;
+        }
+        return false;
+    }
 }
