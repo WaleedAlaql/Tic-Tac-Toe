@@ -16,7 +16,7 @@ A robust, feature-rich command-line implementation of the classic Tic Tac Toe ga
 
 ---
 
-## 🛠️ Technical Stack & Concepts
+## Technical Stack & Concepts
 
 * **Language:** Java 17+
 * **Core Concepts:** 
